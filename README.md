@@ -41,20 +41,17 @@ cp .env.example .env
 接着按[安装说明](docs/INSTALL.md)准备依赖，按[使用说明](docs/USAGE.md)运行。`.env`、运行目录和执行日志默认忽略，不进入 Git。
 
 ```bash
-bash tools/linux-env.sh .runtime/linux-python/bin/python -m evotrace_bridge --help
+bash tools/linux-env.sh .runtime/linux-python/bin/tracewaltz --help
 ```
 
-## 代码结构
+## 系统组成
 
-| 目录 | 职责 |
+| 部分 | 职责 |
 | --- | --- |
-| `evotrace_bridge/` | 编码记录、任务转换、原生评测连接、改进执行、采用发布与整轮状态 |
-| `harness/` | DSH 启动、工具和模型服务接入，以及容器构建材料 |
-| `target/` | 被评测和改进的初始 Agent 配置 |
-| `tools/` | 安装、运行环境、配置检查和独立工作流评价入口 |
-| `patches/evotrace/` | 对固定上游版本的集成补丁与上游许可证 |
-| `tests/` | 契约、隔离、评分、状态恢复及发布等本地回归 |
-| `examples/` | 人工编写的布尔解析、分页和超时配置练习仓库 |
+| 编码执行 | 在代码副本中完成需求，保存修改和工具反馈 |
+| 任务生产 | 审核执行记录，构建可复现任务并整理经验 |
+| 配置改进 | 调查失败，修改候选策略、插件与工作流 |
+| 评测与发布 | 隔离执行、独立评分、候选比较和版本采用 |
 
 运行时在本项目下生成 `.runtime/`、`.state/` 和 `artifacts/`，分别保存依赖、状态和执行产物。任务包、重复运行和冻结副本分别管理。
 

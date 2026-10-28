@@ -4,7 +4,7 @@
 
 ## 1. 准备项目内运行环境
 
-先确认 `git`、`curl`、`xz`、`python3`、Python venv 和 `apt download` 可用。安装脚本在项目内下载固定 Node、Gear、DSH、EvoTrace 及便携工具，不安装系统 Docker，也不调用模型。
+先确认 `git`、`curl`、`xz`、`python3`、Python venv 和 `apt download` 可用。安装脚本在项目内下载固定版本的运行环境、Agent 依赖及便携工具，不安装系统 Docker，也不调用模型。
 
 ```bash
 bash tools/setup-linux.sh
@@ -12,7 +12,7 @@ bash tools/prepare-linux-review.sh
 bash tools/setup-hitch.sh
 ```
 
-EvoTrace 安装会检出 `dependencies.lock.json` 指定的上游版本，并应用 `patches/evotrace/integration.patch`。审核 DSH 与编码 DSH 分开安装；`config/review-package.json` 固定审核组件版本。
+任务生产组件会检出 `dependencies.lock.json` 指定的上游版本，并应用 `patches/evotrace/integration.patch`。审核 DSH 与编码 DSH 分开安装；`config/review-package.json` 固定审核组件版本。
 
 若依赖下载源已经不再提供某个固定版本，先保存错误并调整安装来源；不要直接升级编码或审核 DSH 后复用旧评测成绩。
 
@@ -55,8 +55,8 @@ DEEPSEEK_MODEL=your-available-model
 ## 4. 初始化与检查
 
 ```bash
-bash tools/linux-env.sh .runtime/linux-python/bin/python -m evotrace_bridge init
-bash tools/linux-env.sh .runtime/linux-python/bin/python -m evotrace_bridge doctor
+bash tools/linux-env.sh .runtime/linux-python/bin/tracewaltz init
+bash tools/linux-env.sh .runtime/linux-python/bin/tracewaltz doctor
 ```
 
 默认配置在 `.state/bridge.json`。`doctor` 检查基本工具和运行入口；容器与真实模型仍通过后续执行验证。账本在 `.state/api/requests.sqlite`，初始调用上限为 3000，失败和响应未知也保留计数。修改已建立上限须通过显式授权入口，不通过删除数据库或重启绕过。

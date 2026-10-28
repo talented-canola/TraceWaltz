@@ -1,2 +1,3 @@
 @echo off
-call "%~dp0evotrace-loop.cmd" %*
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0tracewaltz.ps1" %*
+exit /b %errorlevel%

@@ -135,7 +135,7 @@ def gear_configuration(config):
 
 def prepare_optimization(config, dataset, request_id):
     if os.name == 'nt':
-        raise BridgeError('linux_required', 'Gear 需要 Linux；Windows 使用 evotrace-loop.cmd')
+        raise BridgeError('linux_required', 'Gear 需要 Linux；Windows 使用 tracewaltz.cmd')
     if config.get('execution', {}).get('backend') == 'hitch':
         from .native_optimization import prepare_native_optimization
         return prepare_native_optimization(config, dataset, request_id)
