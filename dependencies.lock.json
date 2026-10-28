@@ -1,0 +1,17 @@
+{
+  "evotrace": {
+    "repository": "https://github.com/jinzijian/EvoTrace",
+    "commit": "c96938020e762266a4b68e7b1c5df33f8de768dd"
+  },
+  "gear": {
+    "repository": "https://github.com/rsi-gear/gear",
+    "commit": "c3809b95ce27bbc9420cc3836cbb692097ff9f1e"
+  },
+  "hitch": {
+    "repository": "https://github.com/rsi-gear/agent-hitch",
+    "commit": "6385c22388e69a3df0832cd88f21500a525751ee"
+  },
+  "coding_dsh": "0.1.5-rc.3",
+  "review_dsh": "0.1.0-rc.8",
+  "harbor": "0.21.0"
+}

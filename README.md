@@ -72,4 +72,3 @@ mkdir -p .test-work
 ## 上游关系
 
 TraceWaltz 复用 DSH 的执行机制、EvoTrace 的任务与经验处理、Gear 的搜索比较以及 Hitch / Harbor 的执行评测。集成层负责数据转换、证据对应、真实 DSH Meta 连接和配置发布。具体版本见 `dependencies.lock.json`，来源与许可证见 [THIRD_PARTY.md](THIRD_PARTY.md)。
-

@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+project=$(cd "$(dirname "$0")/.." && pwd)
+entry="$project/.runtime/docker-data/npm-runtime/bin/npm-cli.js"
+if [ ! -f "$entry" ]; then entry="$project/.runtime/node-v24.15.0-linux-x64/lib/node_modules/npm/bin/npm-cli.js"; fi
+exec "$project/.runtime/node-v24.15.0-linux-x64/bin/node" "$entry" "$@"

@@ -1,0 +1,10 @@
+#!/bin/bash
+set -euo pipefail
+project=$(cd "$(dirname "$0")/.." && pwd)
+entry="$project/.runtime/hitch-source/dist/bin/hitch.js"
+if [ -f "$project/.state/hitch-executable" ]; then entry=$(cat "$project/.state/hitch-executable"); fi
+root="$project/.state/hitch"
+if [ -f "$project/.state/native-hitch-root" ]; then root=$(cat "$project/.state/native-hitch-root"); fi
+root_args=(--root "$root")
+for arg in "$@"; do if [ "$arg" = --root ]; then root_args=(); break; fi; done
+exec "$project/.runtime/node-v24.15.0-linux-x64/bin/node" "$entry" "${root_args[@]}" "$@"

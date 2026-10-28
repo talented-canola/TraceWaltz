@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+project=$(cd "$(dirname "$0")/.." && pwd)
+exec "$project/.runtime/node-v24.15.0-linux-x64/bin/node" "$project/.runtime/linux-review/node_modules/@deepseek-ai/dsh/lib/bin.js" "$@"

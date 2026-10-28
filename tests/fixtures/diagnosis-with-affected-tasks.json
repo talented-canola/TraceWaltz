@@ -1,0 +1,39 @@
+{
+  "summary": "Diagnosed the anchor candidate against both admitted tasks (headers, retry-backoff) without editing it or launching a benchmark. The candidate has exactly three files: preset/agent.cordis.yml, plugins/policy.js, and prompts/system.md. The preset activates ../plugins/policy.js as 'coding-policy'; the plugin reads ../prompts/system.md (355 bytes, sha256 b468df62f8a90ddab4157d9017bd4e2119db633226ac42fcbf764e27b155731e) and registers it as system-prompt section 'harness:coding-policy' at order 50. That prompt is an unconditional 'Controlled acceptance fault / receipt-only mode' directive: reply exactly PROFILE_STOP, do not call tools, do not read/edit files, do not run tests, do not perform the coding work. All four captured observations (headers x2, retry-backoff x2) contain this 355-byte text verbatim in the system message, emit exactly 'PROFILE_STOP' as the only assistant text, contain zero tool-call events, and report changed_entries 0; the headers suite fails 4/5 and the retry suite fails 40/41. The failure is therefore a global prompt-layer sabotage, not task-specific coding logic. Checks actually performed: node --check plugins/policy.js (exit 0); YAML load of preset/agent.cordis.yml resolves to [{'id':'coding-policy','name':'../plugins/policy.js'}]; runtime apply() with a mock ctx registers exactly one section containing the prompt; grep confirms the stop text appears only in prompts/system.md; file enumeration confirms there are no skills or workflows that could override it. Remaining uncertainty: deleting/replacing the directive should restore normal tool-use agency, but this diagnosis cannot guarantee that the model's subsequent implementations pass both suites; the plugin/preset plumbing itself is working and needs no code change. The justified reusable change is to replace the receipt-only stop block in prompts/system.md with a legitimate coding-policy prompt while preserving the existing preset -> plugin -> prompt loading path.",
+  "declined": false,
+  "hypotheses": [
+    "The injected receipt-only/stop directive in prompts/system.md is the root cause: preset/agent.cordis.yml activates plugins/policy.js, which reads prompts/system.md and registers it globally as system-prompt section 'harness:coding-policy' at order 50, so every task stops before any inspection, tool call, or edit.",
+    "The fault is shared-prompt-scoped, not task-family-scoped: headers and retry-backoff show the same provider transcript ('PROFILE_STOP'), the same absence of tool-call events, and the same changed_entries 0, so per-task guidance or skills are not the differentiator.",
+    "The plugin and preset plumbing is functional (node --check passes; mock-context apply() registers exactly one section with the prompt text), so the minimal justified fix is to replace the content of prompts/system.md rather than to rewrite the plugin or preset.",
+    "The verifier failures are downstream symptoms of the stop directive: 'candidate changed the repository' fails because no edit is made, and headers/retry assertions fail because the source files are untouched; they do not indicate an independent regression or a broken test harness."
+  ],
+  "clusters": [
+    {
+      "id": "global-receipt-only-stop",
+      "title": "Global system-prompt directive suppresses all coding work",
+      "mechanism": "prompts/system.md contains an unconditional receipt-only stop instruction; plugins/policy.js injects it verbatim as a system-prompt section at order 50 for every session.",
+      "loading_path": [
+        "preset/agent.cordis.yml",
+        "plugins/policy.js",
+        "prompts/system.md"
+      ],
+      "affected_tasks": [
+        "headers",
+        "retry-backoff"
+      ],
+      "evidence": {
+        "prompt_sha256": "sha256:b468df62f8a90ddab4157d9017bd4e2119db633226ac42fcbf764e27b155731e",
+        "prompt_bytes": 355,
+        "observations_checked": 4,
+        "prompt_verbatim_in_system_message": true,
+        "assistant_final_text": "PROFILE_STOP",
+        "tool_call_events": 0,
+        "changed_entries": 0,
+        "headers_components_passed": "1/5",
+        "retry_backoff_components_passed": "1/41"
+      },
+      "confidence": "high",
+      "justified_change": "Replace the 'Controlled acceptance fault / receipt-only mode' block in prompts/system.md with a legitimate coding-policy prompt and keep the existing preset and plugin loading path intact."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tracewaltz"
+version = "0.1.0"
+description = "TraceWaltz: executable coding agents, task and experience production, and Gear refinement"
+requires-python = ">=3.12"
+dependencies = ["psutil==7.2.2", "PyYAML==6.0.3", "tomli-w==1.2.0", "zstandard==0.25.0"]
+
+[project.scripts]
+tracewaltz = "evotrace_bridge.cli:main"
+evotrace-loop = "evotrace_bridge.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["evotrace_bridge*"]

@@ -1,0 +1,15 @@
+#!/bin/bash
+set -euo pipefail
+project=$(cd "$(dirname "$0")/.." && pwd)
+if [ -x "$project/.runtime/docker/docker" ]; then
+  exec "$project/.runtime/docker/docker" "$@"
+fi
+IFS=: read -ra entries <<< "$PATH"
+for directory in "${entries[@]}"; do
+  candidate="${directory:-.}/docker"
+  if [ -x "$candidate" ] && [ "$(readlink -f "$candidate")" != "$(readlink -f "$0")" ]; then
+    exec "$candidate" "$@"
+  fi
+done
+echo 'Docker CLI not found; configure Docker before container evaluation.' >&2
+exit 127
