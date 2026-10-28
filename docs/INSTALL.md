@@ -12,7 +12,7 @@ bash tools/prepare-linux-review.sh
 bash tools/setup-hitch.sh
 ```
 
-任务生产组件会检出 `dependencies.lock.json` 指定的上游版本，并应用 `patches/evotrace/integration.patch`。审核 DSH 与编码 DSH 分开安装；`config/review-package.json` 固定审核组件版本。
+任务生产组件会检出 `dependencies.lock.json` 指定的上游版本，并应用 `patches/evotrace/integration.patch`。审核 DSH 与编码 DSH 分开安装；`config/review-package.json` 固定审核组件版本。审核安装结束后，会将受管上游源码的 `node_modules` 连接到独立审核依赖，使其插件能够解析对应版本；已有依赖目录不会被覆盖。
 
 若依赖下载源已经不再提供某个固定版本，先保存错误并调整安装来源；不要直接升级编码或审核 DSH 后复用旧评测成绩。
 

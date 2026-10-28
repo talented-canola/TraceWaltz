@@ -6,3 +6,4 @@ export npm_config_cache="$PWD/.runtime/npm-cache" TMPDIR="$PWD/.runtime/tmp"
 mkdir -p .runtime/linux-review
 "$PWD/.runtime/linux-python/bin/python" tools/pin-review-packages.py
 npm install --prefix .runtime/linux-review --no-audit --no-fund --legacy-peer-deps --include=optional
+"$PWD/.runtime/linux-python/bin/python" tools/pin-review-packages.py --link
